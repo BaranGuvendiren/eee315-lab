@@ -1,0 +1,16 @@
+.DS_Store
+
+.venv/
+
+*.net
+*.log
+*.raw
+*.op.raw
+*.plt
+*.synctex.gz
+
+*.aux
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
