@@ -1,3 +1,4 @@
+%! TeX root = experiment-1.tex
 \input{../template/preamble}
 
 \begin{document}
@@ -8,24 +9,54 @@
 \subsection*{Problem 1}
 \subsubsection*{1.a) \normalfont\itshape When measuring a signal, under what circumstances should each type of voltage value, $V_\mathrm{p}$, $V_{\mathrm{pp}}$, $V_{\mathrm{rms}}$, be used?}
 
+Each value is useful in a different situation:
 \begin{itemize}
-    \item \textbf{Peak Voltage ($V_\mathrm{p}$):} Used for determining the maximum voltage levels relative to ground. Example use cases include determining diode's reverse voltage rating or finding the maximum output of a rectifier or clipper.
-                                                  For asymmetric waveforms relative to ground, the positive and negative peaks must be measured separately.
-    \item \textbf{Peak-to-Peak Voltage ($V_\mathrm{pp}$):} Used when the total swing of the signal is required. It does not depend on the DC offset or the ground reference. For instance, function generators are typically set in terms of $V_{pp}$. 
-                                                           Additionally, it is the standard metric for measuring ripple or noise amplitude.
-    \item \textbf{RMS Voltage ($V_\mathrm{rms}$):} Used for power calculation and thermal analysis as it represents the equivalent DC voltage which delivers the same average power to load. It is also the best metric for comparing waveforms with different shapes.
+    \item \textbf{$V_\mathrm{p}$:} $V_\mathrm{p}$ is used when the maximum voltage is important. Examples are checking that the diode's reverse voltage rating is not exceeded, or finding the maximum output of a rectifier or clipper. If the waveform is not symmetric around ground, the positive and negative peaks should be measured separately.
+    \item \textbf{$V_{\mathrm{pp}}$:} $V_{\mathrm{pp}}$ is used when we want the total swing of the signal. It does not depend on the DC offset or the ground reference. For example, we set the function generator as $10\text{ }V_{\mathrm{pp}}$, and $V_{\mathrm{pp}}$ is also used for ripple or noise amplitude.
+    \item \textbf{$V_{\mathrm{rms}}$:} $V_{\mathrm{rms}}$ is used when power or heating is important, since $P = V_{\mathrm{rms}}^2/R$ holds for any waveform. It is also the best value for comparing waveforms with different shapes.
 \end{itemize}
 
 \subsubsection*{1.b) \normalfont\itshape How does the purpose of measurement (e.g., power analysis, amplitude comparison, waveform characterization) influence this choice?}
 
+\begin{itemize}
+    \item \textbf{Power analysis:} For power analysis, RMS is the right choice. If the total power is needed, the DC part must be included (AC+DC RMS). If only the ripple is of interest, the AC RMS is enough.
+    \item \textbf{Amplitude comparison:} For amplitude comparison, $V_{\mathrm{pp}}$ or $V_\mathrm{p}$ is easier because it can be read directly from the oscilloscope screen, but this only works well if the waveforms have the same shape.
+    \item \textbf{Waveform characterization:} For waveform characterization, one value is not enough. We would measure the peaks, $V_{\mathrm{pp}}$, the DC value, the RMS value, and the timing (period, duty cycle, turn-on/turn-off times). The crest factor and ripple factor can then be calculated from these.
+\end{itemize}
+
 \subsubsection*{1.c) \normalfont\itshape What are the differences between how oscilloscopes, multimeters, and simulation tools measure RMS or peak values?}
 
+The three tools work differently:
+\begin{itemize}
+    \item \textbf{Oscilloscope:} It samples the signal with an ADC. It finds $V_{\mathrm{max}}$, $V_{\mathrm{min}}$ and $V_{\mathrm{pp}}$ from the samples and calculates RMS numerically as $\sqrt{\sum v^2/N}$. Because it uses the actual samples, its RMS is correct for any waveform shape. The ``cycle RMS'' option, which uses whole periods, is the most accurate.
+    \item \textbf{Multimeter:} Cheaper meters are average-responding. They rectify the signal, take the average, and multiply by $1.11$, so they are only correct for sine waves. True-RMS meters calculate the real RMS but have limited bandwidth and crest factor. In AC mode they block the DC part. Multimeters usually cannot measure peak values.
+    \item \textbf{Simulation (LTspice):} The values are calculated directly from their definitions using \texttt{.meas} or cursors. There is no noise and no bandwidth limit. However, the results depend on the time step and on the diode model, and RMS has to be taken over full periods after the transients have settled.
+\end{itemize}
+
 \subsubsection*{1.d) \normalfont\itshape Which limitations (sampling rate, bandwidth, waveform type, numerical filtering, etc.) can affect the accuracy or validity of your selected measurement method?}
+
+Several limitations can affect accuracy:
+\begin{itemize}
+    \item \textbf{Sampling rate:} If it is too low, short peaks can be missed or the signal can alias.
+    \item \textbf{Bandwidth:} The higher harmonics of square and pulse waves are attenuated, so the edges and peaks become rounded.
+    \item \textbf{Waveform type:} Average-responding meters give wrong results for non-sinusoidal waves, and signals with a high crest factor can exceed the meter's limits.
+    \item \textbf{Coupling:} AC coupling removes the DC component and can distort low-frequency signals.
+    \item \textbf{Measurement window:} RMS calculated over a non-integer number of periods gives an error.
+    \item \textbf{Noise:} Spikes affect the peak and $V_{\mathrm{pp}}$ readings more than the RMS value.
+    \item \textbf{Scope resolution:} The scope has only 8 bits, so the signal should fill the screen.
+    \item \textbf{Probes:} The probe setting ($\times 1$ or $\times 10$) must be correct. Voltages across components that are not grounded need the two-probe differential method, which adds some error.
+    \item \textbf{Simulation:} The time step size and the accuracy of the model affect the results.
+\end{itemize}
 
 \subsubsection*{1.e) \normalfont\itshape Based on your discussion in 1.a), 1.b), 1.c), and 1.d), justify which measurement technique is the most appropriate for measuring $V_\mathrm{p}$, $V_{\mathrm{pp}}$ and $V_{\mathrm{rms}}$.
                                         Explain your reasoning by referring to the characteristics of each quantity, the type of waveform, and the capabilities of your measurement instruments.}
 
-\vspace{0.5cm}
+\begin{itemize}
+    \item \textbf{For $V_\mathrm{p}$ and $V_{\mathrm{pp}}$:} The oscilloscope with DC coupling is the most appropriate method. These are instantaneous values, so we need to see the waveform, and a multimeter cannot measure them. Our signals are around \SI{100}{\hertz}, so bandwidth and sampling rate are not a problem. DC coupling keeps the real peak values of the asymmetric clipper and rectifier outputs. We would check the automatic measurements with cursors, and use $\mathrm{CH1} - \mathrm{CH2}$ for components that are not grounded.
+    \item \textbf{For $V_{\mathrm{rms}}$:} We would use the oscilloscope's cycle RMS measurement, or a true-RMS multimeter, which is fine at \SI{100}{\hertz}. The waveforms in this lab (triangular, clipped, rectified) are not sine waves, so an average-responding meter would give wrong values. If the multimeter is in AC mode, we would also measure the DC value and calculate the total RMS as $\sqrt{V_{\mathrm{DC}}^2 + V_{\mathrm{ACrms}}^2}$.
+\end{itemize}
+
+\clearpage
 \subsection*{Problem 2}
 \subsubsection*{2.a) \normalfont\itshape Show that the RMS value $V_\mathrm{rms}$ of a sinusoidal voltage waveform $v(t) = V_\mathrm{p}\sin(\omega t)$ is given by
 \begin{equation*}
@@ -33,12 +64,114 @@
 \end{equation*}
 Where $V_{p}$ is the peak value of the voltage waveform.}
 
-\vspace{0.5cm}
+The root-mean-square (RMS) value of a continuous periodic voltage waveform $v(t)$ of period $T$ is defined by:
+\begin{equation}
+    V_{\text{rms}} = \sqrt{\frac{1}{T} \int_{0}^{T} v^2(t) \, dt}
+\end{equation}
+
+For a sinusoidal voltage $v(t) = V_p \sin(\omega t)$, the function $v^2(t) = V_p^2 \sin^2(\omega t)$ is periodic with period $T/2$. Due to half-cycle symmetry, the mean-square value over the full period equals the average over a half period:
+\begin{equation}
+    V_{\text{rms}} = \sqrt{\frac{2}{T} \int_{0}^{T/2} V_p^2 \sin^2(\omega t) \, dt}
+\end{equation}
+
+Using the power-reduction trigonometric identity:
+\begin{equation}
+    \sin^2(\omega t) = \frac{1 - \cos(2\omega t)}{2}
+\end{equation}
+
+Substituting this identity into the integral:
+\begin{align}
+    \frac{2}{T} \int_{0}^{T/2} V_p^2 \sin^2(\omega t) \, dt &= \frac{2 V_p^2}{T} \int_{0}^{T/2} \frac{1 - \cos(2\omega t)}{2} \, dt \\
+    &= \frac{V_p^2}{T} \int_{0}^{T/2} \left( 1 - \cos(2\omega t) \right) dt
+\end{align}
+
+Integrating term by term:
+\begin{equation}
+    \int_{0}^{T/2} \left( 1 - \cos(2\omega t) \right) dt = \left[ t - \frac{\sin(2\omega t)}{2\omega} \right]_{0}^{T/2}
+\end{equation}
+
+Recalling that the angular frequency is $\omega = \frac{2\pi}{T}$, the term inside the sine function evaluated at $t = T/2$ becomes:
+\begin{equation}
+    2\omega \left(\frac{T}{2}\right) = \omega T = \left(\frac{2\pi}{T}\right) T = 2\pi
+\end{equation}
+
+Evaluating between the boundaries:
+\begin{align}
+    \left[ t - \frac{\sin(2\omega t)}{2\omega} \right]_{0}^{T/2} &= \left( \frac{T}{2} - \frac{\sin(2\pi)}{2\omega} \right) - \left( 0 - \frac{\sin(0)}{2\omega} \right) \\
+    &= \frac{T}{2} - 0 = \frac{T}{2}
+\end{align}
+
+Substituting this evaluation back into the mean-square equation gives:
+\begin{equation}
+    \frac{V_p^2}{T} \cdot \frac{T}{2} = \frac{V_p^2}{2}
+\end{equation}
+
+Finally, taking the square root gives the RMS voltage:
+\begin{equation}
+    V_{\text{rms}} = \sqrt{\frac{V_p^2}{2}} = \frac{V_p}{\sqrt{2}}
+\end{equation}
+
+\clearpage
 \subsection*{Problem 3}
 \subsubsection*{3.a) \normalfont\itshape Show that the RMS value $V_\mathrm{\sum rms}$ of a voltage waveform $v(t) = V_\mathrm{DC} + v_\mathrm{AC}(t)$ is given by
 \begin{equation*}
     V_\mathrm{\sum rms} = \sqrt{V_\mathrm{DC}^2 + V_\mathrm{ACrms}^2},
 \end{equation*}
 Where $V_\mathrm{ACrms}$ is the RMS value of the pure AC component $v_\mathrm{AC}(t)$}
+
+\setcounter{equation}{0}
+
+The total root-mean-square (RMS) value $V_{\Sigma \text{rms}}$ of a periodic waveform $v(t)$ over a fundamental period $T$ is defined by:
+\begin{equation}
+    V_{\Sigma \text{rms}} = \sqrt{\frac{1}{T} \int_{0}^{T} v^2(t) \, dt}
+\end{equation}
+
+For a waveform composed of a constant DC offset $V_{\text{DC}}$ and a time-varying AC component $v_{\text{AC}}(t)$:
+\begin{equation}
+    v(t) = V_{\text{DC}} + v_{\text{AC}}(t)
+\end{equation}
+
+Squaring the voltage function yields:
+\begin{equation}
+    v^2(t) = \left( V_{\text{DC}} + v_{\text{AC}}(t) \right)^2 = V_{\text{DC}}^2 + 2 V_{\text{DC}} v_{\text{AC}}(t) + v_{\text{AC}}^2(t)
+\end{equation}
+
+Substituting this expansion into the mean-square expression:
+\begin{align}
+    \frac{1}{T} \int_{0}^{T} v^2(t) \, dt &= \frac{1}{T} \int_{0}^{T} \left( V_{\text{DC}}^2 + 2 V_{\text{DC}} v_{\text{AC}}(t) + v_{\text{AC}}^2(t) \right) dt \\
+    &= \frac{1}{T} \int_{0}^{T} V_{\text{DC}}^2 \, dt + \frac{2 V_{\text{DC}}}{T} \int_{0}^{T} v_{\text{AC}}(t) \, dt + \frac{1}{T} \int_{0}^{T} v_{\text{AC}}^2(t) \, dt
+\end{align}
+
+Evaluating each integral term individually:
+\begin{enumerate}
+    \item The DC constant term integrates directly:
+    \begin{equation}
+        \frac{1}{T} \int_{0}^{T} V_{\text{DC}}^2 \, dt = \frac{V_{\text{DC}}^2}{T} [t]_{0}^{T} = V_{\text{DC}}^2
+    \end{equation}
+
+    \item By definition, the pure AC component $v_{\text{AC}}(t)$ has a zero time-average (DC) value over its period:
+    \begin{equation}
+        \frac{1}{T} \int_{0}^{T} v_{\text{AC}}(t) \, dt = 0
+    \end{equation}
+    Therefore, the cross-product term vanishes:
+    \begin{equation}
+        \frac{2 V_{\text{DC}}}{T} \int_{0}^{T} v_{\text{AC}}(t) \, dt = 0
+    \end{equation}
+
+    \item The third term represents the square of the RMS value of the AC component by definition:
+    \begin{equation}
+        \frac{1}{T} \int_{0}^{T} v_{\text{AC}}^2(t) \, dt = V_{\text{ACrms}}^2
+    \end{equation}
+\end{enumerate}
+
+Combining the three evaluated components:
+\begin{equation}
+    \frac{1}{T} \int_{0}^{T} v^2(t) \, dt = V_{\text{DC}}^2 + 0 + V_{\text{ACrms}}^2 = V_{\text{DC}}^2 + V_{\text{ACrms}}^2
+\end{equation}
+
+Taking the square root of both sides gives the total RMS value:
+\begin{equation}
+    V_{\Sigma \text{rms}} = \sqrt{V_{\text{DC}}^2 + V_{\text{ACrms}}^2}
+\end{equation}
 
 \end{document}
