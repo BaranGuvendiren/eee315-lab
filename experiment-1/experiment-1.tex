@@ -5,4 +5,40 @@
 \renewcommand{\LabNumber}{1}
 \input{../template/titlepage}
 
+\subsection*{Problem 1}
+\subsubsection*{1.a) \normalfont\itshape When measuring a signal, under what circumstances should each type of voltage value, $V_\mathrm{p}$, $V_{\mathrm{pp}}$, $V_{\mathrm{rms}}$, be used?}
+
+\begin{itemize}
+    \item \textbf{Peak Voltage ($V_\mathrm{p}$):} Used for determining the maximum voltage levels relative to ground. Example use cases include determining diode's reverse voltage rating or finding the maximum output of a rectifier or clipper.
+                                                  For asymmetric waveforms relative to ground, the positive and negative peaks must be measured separately.
+    \item \textbf{Peak-to-Peak Voltage ($V_\mathrm{pp}$):} Used when the total swing of the signal is required. It does not depend on the DC offset or the ground reference. For instance, function generators are typically set in terms of $V_{pp}$. 
+                                                           Additionally, it is the standard metric for measuring ripple or noise amplitude.
+    \item \textbf{RMS Voltage ($V_\mathrm{rms}$):} Used for power calculation and thermal analysis as it represents the equivalent DC voltage which delivers the same average power to load. It is also the best metric for comparing waveforms with different shapes.
+\end{itemize}
+
+\subsubsection*{1.b) \normalfont\itshape How does the purpose of measurement (e.g., power analysis, amplitude comparison, waveform characterization) influence this choice?}
+
+\subsubsection*{1.c) \normalfont\itshape What are the differences between how oscilloscopes, multimeters, and simulation tools measure RMS or peak values?}
+
+\subsubsection*{1.d) \normalfont\itshape Which limitations (sampling rate, bandwidth, waveform type, numerical filtering, etc.) can affect the accuracy or validity of your selected measurement method?}
+
+\subsubsection*{1.e) \normalfont\itshape Based on your discussion in 1.a), 1.b), 1.c), and 1.d), justify which measurement technique is the most appropriate for measuring $V_\mathrm{p}$, $V_{\mathrm{pp}}$ and $V_{\mathrm{rms}}$.
+                                        Explain your reasoning by referring to the characteristics of each quantity, the type of waveform, and the capabilities of your measurement instruments.}
+
+\vspace{0.5cm}
+\subsection*{Problem 2}
+\subsubsection*{2.a) \normalfont\itshape Show that the RMS value $V_\mathrm{rms}$ of a sinusoidal voltage waveform $v(t) = V_\mathrm{p}\sin(\omega t)$ is given by
+\begin{equation*}
+    V_\mathrm{rms} = \frac{V_{p}}{\sqrt{2}},
+\end{equation*}
+Where $V_{p}$ is the peak value of the voltage waveform.}
+
+\vspace{0.5cm}
+\subsection*{Problem 3}
+\subsubsection*{3.a) \normalfont\itshape Show that the RMS value $V_\mathrm{\sum rms}$ of a voltage waveform $v(t) = V_\mathrm{DC} + v_\mathrm{AC}(t)$ is given by
+\begin{equation*}
+    V_\mathrm{\sum rms} = \sqrt{V_\mathrm{DC}^2 + V_\mathrm{ACrms}^2},
+\end{equation*}
+Where $V_\mathrm{ACrms}$ is the RMS value of the pure AC component $v_\mathrm{AC}(t)$}
+
 \end{document}
