@@ -9,11 +9,12 @@
 \subsection*{Problem 1}
 \subsubsection*{1.a) \normalfont\itshape When measuring a signal, under what circumstances should each type of voltage value, $V_\mathrm{p}$, $V_{\mathrm{pp}}$, $V_{\mathrm{rms}}$, be used?}
 
-Each value is useful in a different situation:
 \begin{itemize}
-    \item \textbf{$V_\mathrm{p}$:} $V_\mathrm{p}$ is used when the maximum voltage is important. Examples are checking that the diode's reverse voltage rating is not exceeded, or finding the maximum output of a rectifier or clipper. If the waveform is not symmetric around ground, the positive and negative peaks should be measured separately.
-    \item \textbf{$V_{\mathrm{pp}}$:} $V_{\mathrm{pp}}$ is used when we want the total swing of the signal. It does not depend on the DC offset or the ground reference. For example, we set the function generator as $10\text{ }V_{\mathrm{pp}}$, and $V_{\mathrm{pp}}$ is also used for ripple or noise amplitude.
-    \item \textbf{$V_{\mathrm{rms}}$:} $V_{\mathrm{rms}}$ is used when power or heating is important, since $P = V_{\mathrm{rms}}^2/R$ holds for any waveform. It is also the best value for comparing waveforms with different shapes.
+    \item \textbf{Peak Voltage ($V_\mathrm{p}$):} Used for determining the maximum voltage levels relative to ground. Example use cases include determining diode's reverse voltage rating or finding the maximum output of a rectifier or clipper.
+                                                  For asymmetric waveforms relative to ground, the positive and negative peaks must be measured separately.
+    \item \textbf{Peak-to-Peak Voltage ($V_\mathrm{pp}$):} Used when the total swing of the signal is required. It does not depend on the DC offset or the ground reference. For instance, function generators are typically set in terms of $V_{pp}$. 
+                                                           Additionally, it is the standard metric for measuring ripple or noise amplitude.
+    \item \textbf{RMS Voltage ($V_\mathrm{rms}$):} Used for power calculation and thermal analysis as it represents the equivalent DC voltage which delivers the same average power to load. It is also the best metric for comparing waveforms with different shapes.
 \end{itemize}
 
 \subsubsection*{1.b) \normalfont\itshape How does the purpose of measurement (e.g., power analysis, amplitude comparison, waveform characterization) influence this choice?}
@@ -65,19 +66,20 @@ Several limitations can affect accuracy:
 Where $V_{p}$ is the peak value of the voltage waveform.}
 
 The root-mean-square (RMS) value of a continuous periodic voltage waveform $v(t)$ of period $T$ is defined by:
-\begin{equation}
+\begin{equation*}
     V_{\text{rms}} = \sqrt{\frac{1}{T} \int_{0}^{T} v^2(t) \, dt}
-\end{equation}
+\end{equation*}
 
-For a sinusoidal voltage $v(t) = V_p \sin(\omega t)$, the function $v^2(t) = V_p^2 \sin^2(\omega t)$ is periodic with period $T/2$. Due to half-cycle symmetry, the mean-square value over the full period equals the average over a half period:
-\begin{equation}
+For a sinusoidal voltage $v(t) = V_p \sin(\omega t)$, the function $v^2(t) = V_p^2 \sin^2(\omega t)$ is periodic with period $T/2$. 
+Due to half-cycle symmetry, the mean-square value over the full period equals the average over a half period:
+\begin{equation*}
     V_{\text{rms}} = \sqrt{\frac{2}{T} \int_{0}^{T/2} V_p^2 \sin^2(\omega t) \, dt}
-\end{equation}
+\end{equation*}
 
 Using the power-reduction trigonometric identity:
-\begin{equation}
+\begin{equation*}
     \sin^2(\omega t) = \frac{1 - \cos(2\omega t)}{2}
-\end{equation}
+\end{equation*}
 
 Substituting this identity into the integral:
 \begin{align}
@@ -86,14 +88,14 @@ Substituting this identity into the integral:
 \end{align}
 
 Integrating term by term:
-\begin{equation}
+\begin{equation*}
     \int_{0}^{T/2} \left( 1 - \cos(2\omega t) \right) dt = \left[ t - \frac{\sin(2\omega t)}{2\omega} \right]_{0}^{T/2}
-\end{equation}
+\end{equation*}
 
 Recalling that the angular frequency is $\omega = \frac{2\pi}{T}$, the term inside the sine function evaluated at $t = T/2$ becomes:
-\begin{equation}
+\begin{equation*}
     2\omega \left(\frac{T}{2}\right) = \omega T = \left(\frac{2\pi}{T}\right) T = 2\pi
-\end{equation}
+\end{equation*}
 
 Evaluating between the boundaries:
 \begin{align}
@@ -102,14 +104,14 @@ Evaluating between the boundaries:
 \end{align}
 
 Substituting this evaluation back into the mean-square equation gives:
-\begin{equation}
+\begin{equation*}
     \frac{V_p^2}{T} \cdot \frac{T}{2} = \frac{V_p^2}{2}
-\end{equation}
+\end{equation*}
 
 Finally, taking the square root gives the RMS voltage:
-\begin{equation}
+\begin{equation*}
     V_{\text{rms}} = \sqrt{\frac{V_p^2}{2}} = \frac{V_p}{\sqrt{2}}
-\end{equation}
+\end{equation*}
 
 \clearpage
 \subsection*{Problem 3}
@@ -119,59 +121,82 @@ Finally, taking the square root gives the RMS voltage:
 \end{equation*}
 Where $V_\mathrm{ACrms}$ is the RMS value of the pure AC component $v_\mathrm{AC}(t)$}
 
-\setcounter{equation}{0}
-
 The total root-mean-square (RMS) value $V_{\Sigma \text{rms}}$ of a periodic waveform $v(t)$ over a fundamental period $T$ is defined by:
-\begin{equation}
+\begin{equation*}
     V_{\Sigma \text{rms}} = \sqrt{\frac{1}{T} \int_{0}^{T} v^2(t) \, dt}
-\end{equation}
+\end{equation*}
 
 For a waveform composed of a constant DC offset $V_{\text{DC}}$ and a time-varying AC component $v_{\text{AC}}(t)$:
-\begin{equation}
+\begin{equation*}
     v(t) = V_{\text{DC}} + v_{\text{AC}}(t)
-\end{equation}
+\end{equation*}
 
 Squaring the voltage function yields:
-\begin{equation}
+\begin{equation*}
     v^2(t) = \left( V_{\text{DC}} + v_{\text{AC}}(t) \right)^2 = V_{\text{DC}}^2 + 2 V_{\text{DC}} v_{\text{AC}}(t) + v_{\text{AC}}^2(t)
-\end{equation}
+\end{equation*}
 
 Substituting this expansion into the mean-square expression:
-\begin{align}
+\begin{align*}
     \frac{1}{T} \int_{0}^{T} v^2(t) \, dt &= \frac{1}{T} \int_{0}^{T} \left( V_{\text{DC}}^2 + 2 V_{\text{DC}} v_{\text{AC}}(t) + v_{\text{AC}}^2(t) \right) dt \\
     &= \frac{1}{T} \int_{0}^{T} V_{\text{DC}}^2 \, dt + \frac{2 V_{\text{DC}}}{T} \int_{0}^{T} v_{\text{AC}}(t) \, dt + \frac{1}{T} \int_{0}^{T} v_{\text{AC}}^2(t) \, dt
-\end{align}
+\end{align*}
 
 Evaluating each integral term individually:
 \begin{enumerate}
     \item The DC constant term integrates directly:
-    \begin{equation}
+    \begin{equation*}
         \frac{1}{T} \int_{0}^{T} V_{\text{DC}}^2 \, dt = \frac{V_{\text{DC}}^2}{T} [t]_{0}^{T} = V_{\text{DC}}^2
-    \end{equation}
+    \end{equation*}
 
     \item By definition, the pure AC component $v_{\text{AC}}(t)$ has a zero time-average (DC) value over its period:
-    \begin{equation}
+    \begin{equation*}
         \frac{1}{T} \int_{0}^{T} v_{\text{AC}}(t) \, dt = 0
-    \end{equation}
+    \end{equation*}
     Therefore, the cross-product term vanishes:
-    \begin{equation}
+    \begin{equation*}
         \frac{2 V_{\text{DC}}}{T} \int_{0}^{T} v_{\text{AC}}(t) \, dt = 0
-    \end{equation}
+    \end{equation*}
 
     \item The third term represents the square of the RMS value of the AC component by definition:
-    \begin{equation}
+    \begin{equation*}
         \frac{1}{T} \int_{0}^{T} v_{\text{AC}}^2(t) \, dt = V_{\text{ACrms}}^2
-    \end{equation}
+    \end{equation*}
 \end{enumerate}
 
 Combining the three evaluated components:
-\begin{equation}
+\begin{equation*}
     \frac{1}{T} \int_{0}^{T} v^2(t) \, dt = V_{\text{DC}}^2 + 0 + V_{\text{ACrms}}^2 = V_{\text{DC}}^2 + V_{\text{ACrms}}^2
-\end{equation}
+\end{equation*}
 
 Taking the square root of both sides gives the total RMS value:
-\begin{equation}
+\begin{equation*}
     V_{\Sigma \text{rms}} = \sqrt{V_{\text{DC}}^2 + V_{\text{ACrms}}^2}
-\end{equation}
+\end{equation*}
+\clearpage
+
+\begin{figure}[h]
+    \centering
+    \hspace{-0.5cm}
+    \includegraphics[width=0.5\textwidth]{figures/experiment-1-input-output-graph.pdf}
+    \caption{Input/Output Voltage Graph}
+    \label{fig:input_output_voltage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \hspace{-0.5cm}
+    \includegraphics[width=0.5\textwidth]{figures/experiment-1-diode-currents-graph.pdf}
+    \caption{Diode Currents Graph}
+    \label{fig:diode_currents}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \hspace{-2.25cm}
+    \includegraphics[width=0.5\textwidth]{figures/circuit-schematic.pdf}
+    \caption{Circuit Schematic}
+    \label{fig:circuit_schematic}
+\end{figure}
 
 \end{document}
