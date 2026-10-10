@@ -173,30 +173,153 @@ Taking the square root of both sides gives the total RMS value:
 \begin{equation*}
     V_{\Sigma \text{rms}} = \sqrt{V_{\text{DC}}^2 + V_{\text{ACrms}}^2}
 \end{equation*}
+
 \clearpage
+\subsection*{Problem 4}
+\subsubsection*{4.a) \normalfont\itshape Draw the output waveform for the circuit given below using the basic diode model with $V_{\text{ON}} = 0.6\text{ V}$. The input voltage $v_{\text{in}}$ is a $100\text{ Hz}$, $10\text{ V}_{\text{p-p}}$ triangular waveform. Note that the polarity of $D_1$ is reversed in this circuit. Calculate the peak output voltages at $v_o$ and the turn-ON and turn-OFF times of the two diodes during one period of the input.}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
-    \hspace{-0.5cm}
-    \includegraphics[width=0.5\textwidth]{figures/experiment-1-input-output-graph.pdf}
-    \caption{Input/Output Voltage Graph}
-    \label{fig:input_output_voltage}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \hspace{-0.5cm}
-    \includegraphics[width=0.5\textwidth]{figures/experiment-1-diode-currents-graph.pdf}
-    \caption{Diode Currents Graph}
-    \label{fig:diode_currents}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \hspace{-2.25cm}
-    \includegraphics[width=0.5\textwidth]{figures/circuit-schematic.pdf}
-    \caption{Circuit Schematic}
+    \hspace{-2.85cm}
+    \includegraphics[width=0.60\textwidth]{figures/circuit-schematic.pdf}
+    \caption{Circuit schematic for Problem 4.}
     \label{fig:circuit_schematic}
 \end{figure}
 
+\setcounter{equation}{0}
+
+\noindent\textbf{1. Mathematical Description of the Input Waveform}\par\noindent
+The input signal $v_{\text{in}}(t)$ is a $100\text{ Hz}$, $10\text{ V}_{\text{p-p}}$ triangular waveform symmetric around zero ground with a fundamental period of:
+\begin{equation}
+    T = \frac{1}{f} = \frac{1}{100\text{ Hz}} = 10\text{ ms}
+\end{equation}
+Defining one period starting at the negative peak ($t = 0$, $v_{\text{in}} = -5\text{ V}$):
+\begin{equation}
+    v_{\text{in}}(t) = 
+    \begin{cases}
+        -5 + 2t & \text{for } 0 \le t \le 5\text{ ms} \quad (\text{Rising slope: } +2\text{ V/ms}) \\
+        15 - 2t & \text{for } 5\text{ ms} \le t \le 10\text{ ms} \quad (\text{Falling slope: } -2\text{ V/ms})
+    \end{cases}
+\end{equation}
+
+\noindent\textbf{2. Piecewise Circuit Analysis}\par\noindent
+Using the constant-voltage diode model ($V_{\text{ON}} = 0.6\text{ V}$):
+
+\paragraph{Region I: Both Diodes OFF ($-0.6\text{ V} \le v_{\text{in}} \le +2.6\text{ V}$)}
+Diode $D_1$ is reverse-biased when $v_o > -0.6\text{ V}$, and $D_2$ is reverse-biased when $v_o < 2\text{ V} + 0.6\text{ V} = +2.6\text{ V}$. Because both diode branches are open-circuited, no current flows through $R_1$:
+\begin{equation}
+    v_o(t) = v_{\text{in}}(t)
+\end{equation}
+
+\paragraph{Region II: Diode $D_2$ ON, $D_1$ OFF ($v_{\text{in}} > +2.6\text{ V}$)}
+When $v_{\text{in}} > +2.6\text{ V}$, diode $D_2$ turns ON while $D_1$ remains OFF. Applying Kirchhoff's Current Law at node $v_o$:
+\begin{equation}
+    \frac{v_{\text{in}} - v_o}{R_1} = \frac{v_o - (V_{\text{ON}} + 2\text{ V})}{R_3}
+\end{equation}
+With $R_1 = 1\text{ k}\Omega$ and $R_3 = 1\text{ k}\Omega$:
+\begin{equation}
+    v_o(t) = \frac{v_{\text{in}}(t) + 2.6}{2} = 0.5 v_{\text{in}}(t) + 1.3\text{ V}
+\end{equation}
+
+\paragraph{Region III: Diode $D_1$ ON, $D_2$ OFF ($v_{\text{in}} < -0.6\text{ V}$)}
+When $v_{\text{in}} < -0.6\text{ V}$, diode $D_1$ turns ON with its cathode at $v_o$, while $D_2$ is OFF. Writing KCL at node $v_o$ with current flowing from ground through $R_2$ and $D_1$:
+\begin{equation}
+    \frac{0 - V_{\text{ON}} - v_o}{R_2} = \frac{v_o - v_{\text{in}}}{R_1}
+\end{equation}
+Substituting $R_1 = 1000\,\Omega$, $R_2 = 470\,\Omega$, and $V_{\text{ON}} = 0.6\text{ V}$:
+\begin{equation}
+    1000(-0.6 - v_o) = 470(v_o - v_{\text{in}}) \implies 1470 v_o = 470 v_{\text{in}} - 600
+\end{equation}
+\begin{equation}
+    v_o(t) = \frac{47}{147} v_{\text{in}}(t) - \frac{20}{49} \approx 0.3197 v_{\text{in}}(t) - 0.4082\text{ V}
+\end{equation}
+
+\vspace{0.4cm}
+\noindent\textbf{3. Peak Output Voltages}\par\smallskip
+\begin{itemize}
+    \item \textbf{Positive Peak ($v_{o,\max}$):} Occurs at $v_{\text{in}} = +5\text{ V}$:
+    \begin{equation}
+        v_{o,\max} = 0.5(5\text{ V}) + 1.3\text{ V} = \mathbf{+3.80\text{ V}}
+    \end{equation}
+    \item \textbf{Negative Peak ($v_{o,\min}$):} Occurs at $v_{\text{in}} = -5\text{ V}$:
+    \begin{equation}
+        v_{o,\min} = \frac{47}{147}(-5\text{ V}) - \frac{20}{49} = -\frac{295}{147}\text{ V} \approx \mathbf{-2.01\text{ V}}
+    \end{equation}
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{4. Diode Switching Times (Turn-ON and Turn-OFF)}\par\smallskip
+Within the period $t \in [0, 10\text{ ms}]$:
+\begin{enumerate}
+    \item \textbf{$D_1$ Turn-OFF time ($t_1$):} On the rising slope when $v_{\text{in}}(t_1) = -0.6\text{ V}$:
+    \begin{equation}
+        -5 + 2t_1 = -0.6 \implies 2t_1 = 4.4 \implies t_1 = \mathbf{2.20\text{ ms}}
+    \end{equation}
+
+    \item \textbf{$D_2$ Turn-ON time ($t_2$):} On the rising slope when $v_{\text{in}}(t_2) = +2.6\text{ V}$:
+    \begin{equation}
+        -5 + 2t_2 = 2.6 \implies 2t_2 = 7.6 \implies t_2 = \mathbf{3.80\text{ ms}}
+    \end{equation}
+
+    \item \textbf{$D_2$ Turn-OFF time ($t_3$):} On the falling slope when $v_{\text{in}}(t_3) = +2.6\text{ V}$:
+    \begin{equation}
+        15 - 2t_3 = 2.6 \implies 2t_3 = 12.4 \implies t_3 = \mathbf{6.20\text{ ms}}
+    \end{equation}
+
+    \item \textbf{$D_1$ Turn-ON time ($t_4$):} On the falling slope when $v_{\text{in}}(t_4) = -0.6\text{ V}$:
+    \begin{equation}
+        15 - 2t_4 = -0.6 \implies 2t_4 = 15.6 \implies t_4 = \mathbf{7.80\text{ ms}}
+    \end{equation}
+\end{enumerate}
+
+\noindent In summary:
+\begin{itemize}
+    \item Diode $D_1$ conducts for $0 \le t \le 2.20\text{ ms}$ and $7.80\text{ ms} \le t \le 10.00\text{ ms}$ (Total ON time $= 4.40\text{ ms}$).
+    \item Diode $D_2$ conducts for $3.80\text{ ms} \le t \le 6.20\text{ ms}$ (Total ON time $= 2.40\text{ ms}$).
+\end{itemize}
+
+\clearpage
+\subsubsection*{4.b) \normalfont\itshape Simulate the circuit in LTspice and verify your analytical results. Use 1N4007 diode models for $D_1$ and $D_2$. A triangular input can be generated using the PULSE function. Set the source to vary between $-5\text{ V}$ and $+5\text{ V}$ with $T_{\text{rise}} = 5\text{ ms}$, $T_{\text{fall}} = 5\text{ ms}$, $T_{\text{on}} = 0$, and $T_{\text{period}} = 10\text{ ms}$ to obtain a $100\text{ Hz}$, $10\text{ V}_{\text{p-p}}$ triangular waveform. Run a transient simulation and:}
+
+\begin{enumerate}
+    \item[(i)] \textbf{Plot $v_{\text{in}}$ and $v_o$ on the same graph. Verify the positive and negative peak values of $v_o$ obtained in Question 4.a:}\par\smallskip
+    The circuit shown in Figure~\ref{fig:circuit_schematic} was simulated in LTspice using a transient simulation command (\texttt{.tran 10m}). The triangular waveform source was specified using parameters \texttt{PULSE(-5V 5V 0s 5ms 5ms 0s 10ms)} with 1N4007 diode models specified for $D_1$ and $D_2$.
+    
+    Figure~\ref{fig:input_output_voltage} shows the simulated input voltage $v_{\text{in}}(t)$ and output voltage $v_o(t)$ plotted together over one full period ($0 \le t \le 10\text{ ms}$).
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.78\textwidth]{figures/experiment-1-input-output-graph.pdf}
+        \caption{Simulated input voltage $v_{\text{in}}$ and output voltage $v_o$ waveforms.}
+        \label{fig:input_output_voltage}
+    \end{figure}
+
+    Using the waveform cursors in LTspice (marked in Figure~\ref{fig:input_output_voltage}):
+    \begin{itemize}
+        \item \textbf{Positive Peak Verification ($v_{o,\max}$):} At $t = 5.000\text{ ms}$ ($v_{\text{in}} = +5.00\text{ V}$), the simulated cursor measurement is $v_{o,\max\text{,sim}} = \mathbf{+3.782\text{ V}}$. Comparing with the analytical value $v_{o,\max\text{,analytic}} = +3.80\text{ V}$:
+        \begin{equation*}
+            \text{Relative Error} = \frac{|3.782\text{ V} - 3.80\text{ V}|}{3.80\text{ V}} \times 100\% = 0.47\%
+        \end{equation*}
+        
+        \item \textbf{Negative Peak Verification ($v_{o,\min}$):} At $t = 0\text{ s}$ and $t = 10.000\text{ ms}$ ($v_{\text{in}} = -5.00\text{ V}$), the simulated cursor measurement is $v_{o,\min\text{,sim}} = \mathbf{-2.011\text{ V}}$. Comparing with the analytical value $v_{o,\min\text{,analytic}} \approx -2.007\text{ V}$ ($-\frac{295}{147}\text{ V}$):
+        \begin{equation*}
+            \text{Relative Error} = \frac{|-2.011\text{ V} - (-2.007\text{ V})|}{2.007\text{ V}} \times 100\% = 0.20\%
+        \end{equation*}
+    \end{itemize}
+    Both simulated peak voltages verify the analytical derivations from Question~4.a with less than $0.5\%$ error.
+
+    \clearpage
+    \item[(ii)] \textbf{Plot the diode currents $i_{D1}$ and $i_{D2}$. Determine the turn-ON and turn-OFF times and compare with analytical results:}\par\smallskip
+    The simulated branch currents through diodes $D_1$ and $D_2$ are plotted in Figure~\ref{fig:diode_currents}.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.78\textwidth]{figures/experiment-1-diode-currents-graph.pdf}
+        \caption{Simulated diode currents $i_{D1}$ and $i_{D2}$ with switching time cursors.}
+        \label{fig:diode_currents}
+    \end{figure}
+
+    \end{enumerate}
+
 \end{document}
+
